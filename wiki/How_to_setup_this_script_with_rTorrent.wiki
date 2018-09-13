@@ -1,0 +1,62 @@
+#labels Featured,Phase-Deploy
+First of all download last version of this program and place it where you want. It's not a bad idea to place it in your home folder.
+Open the command line and paste these commands.
+
+{{{
+cd ~
+wget http://torrentexpander.googlecode.com/svn/trunk/torrentexpander.sh
+}}}
+
+You must change permissions set:
+
+{{{
+chmod +x torrentexpander.sh
+}}}
+
+Add this line to your _~/.rtorrent.rc_ config file, using a text editor:
+
+{{{
+system.method.set_key = event.download.finished,torrentexpander,"execute=/path/to/your/torrentexpander.sh,$d.get_base_path=,$d.get_base_filename="
+}}}
+
+Instead of this, if you want use Torrentexapander only after you have finish to seed, use this (raccomanded):
+
+{{{
+system.method.set_key = event.download.closed,torrentexpander,"execute=/path/to/your/torrentexpander.sh,$d.get_base_path=,$d.get_base_filename="
+}}}
+
+Now you are ready to configure:
+
+{{{
+./torrentexpander.sh
+}}}
+
+
+----
+
+==If you want to use torrentexpander only for certain torrent, then you could use label==
+----
+
+Ho to configure rtorrent?
+
+{{{
+system.method.set_key = event.download.closed,torrentexpander,"execute=~/run.sh,$d.get_custom1=,$d.get_base_path=,$d.get_base_filename="
+}}}
+
+How to add?
+
+Put this script in your home directory and call it 'run.sh'.
+
+You must change permissions set:
+
+{{{
+chmod +x run.sh
+}}}
+
+{{{
+if [ "$1" = "torrentexpander" ]; then
+	~/torrentexpander.sh $2 $3
+fi
+}}}
+
+If you want to use torrentexpander with a torrent, add a label called 'torrentexpander'. That's all.

@@ -1,0 +1,28 @@
+I haven't found a way for this script to communicate with Flexget through variables.<br />
+i decided to use a text file instead.<br />
+<br />
+Here are what my Flexget settings look like :<br />
+##############################################################<br />
+feeds:
+  expand_and_sort_avi:
+    listdir:
+      - /your/transmission/completed/directory/
+    quality:
+      - <=bluray
+    include: series_list.yml
+    set:
+      path: /'directory/where/your/series/are/stored/{{series_name}}/Season {{series_season}}/'<br />
+      filename: '{{series_name}} S{{series_season|pad(2)}}E{{series_episode|pad(2)}}{{filename | pathext}}'
+    exec:
+      auto_escape: yes<br />
+      fail_entries: yes<br />
+      on_output:
+        for_accepted: mkdir -p "{{path}}" && echo "{{location}}" > /path/to/your/third_party_log_files.log && /path/to/torrentexpander.sh && mv "$(cat "/path/to/your/third_party_log_files.log")" "{{path}}{{filename}}" && rm /path/to/your/third_party_log_files.log<br />
+##############################################################
+<br />
+And here are the settings that are required for my script to work with Flexget :<br /><br />
+##############################################################<br /><br />
+destination_folder=/path/where/your/extracted/files/should/go/<br />
+unrar_bin=/path/to/unrar<br />
+third_party_log=/path/to/your/third_party_log_files.log<br /><br />
+##############################################################<br />
